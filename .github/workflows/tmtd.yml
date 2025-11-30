@@ -1,0 +1,29 @@
+name: 10-minutes-till-dawn Folder Release
+
+on:
+  workflow_dispatch:   # run manually from the Actions tab
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout only 10-minutes-till-dawn folder
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          sparse-checkout: 10-minutes-till-dawn
+          sparse-checkout-cone-mode: true
+
+      - name: Zip 10-minutes-till-dawn folder
+        run: zip -r 10-minutes-till-dawn.zip 10-minutes-till-dawn
+
+      - name: Create release with 10-minutes-till-dawn.zip
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: 10-minutes-till-dawn-v1.0
+          name: 10-minutes-till-dawn Folder Release
+          body: |
+            This release contains only the `10-minutes-till-dawn` folder from the repo.
+          files: 10-minutes-till-dawn.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
