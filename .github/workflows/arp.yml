@@ -1,0 +1,29 @@
+name: Amazing Rope Police Folder Release
+
+on:
+  workflow_dispatch:   # run manually from the Actions tab
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout only amazing-rope-police folder
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          sparse-checkout: amazing-rope-police
+          sparse-checkout-cone-mode: true
+
+      - name: Zip amazing-rope-police folder
+        run: zip -r amazing-rope-police.zip amazing-rope-police
+
+      - name: Create release with amazing-rope-police.zip
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: amazing-rope-police-v1.0
+          name: amazing-rope-police Folder Release
+          body: |
+            This release contains only the `amazing-rope-police` folder from the repo.
+          files: amazing-rope-police.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
